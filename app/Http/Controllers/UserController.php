@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LogInRequest;
+use App\Http\Requests\SignUpRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController
@@ -12,25 +14,30 @@ class UserController
     {
         return view('signUpForm');
     }
-    public function signUp(Request $request)
+    public function signUp(SignUpRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:4|confirmed',
-        ]);
+        $data = $request->all();
 
         $user = User::query()->create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
         ]);
 
-        return response()->json(['success' => true, 'user' => $user], 201);
-
+        return response()->redirectTo('login');
     }
-    public function getInfo() : void
+    public function getLoginForm()
     {
+        return view('loginForm');
+    }
 
+    public function logIn(LogInRequest $request)
+    {
+        $result = Auth::attempt([
+            'email' => $request->get('email'),
+            'password' => $request->get('password')
+        ]);
+
+        response()->redirectTo('catalogPage');
     }
 }
