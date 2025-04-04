@@ -1,10 +1,12 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditProfileRequest;
 use App\Http\Requests\LogInRequest;
 use App\Http\Requests\SignUpRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController
@@ -38,6 +40,67 @@ class UserController
             'password' => $request->get('password')
         ]);
 
-        response()->redirectTo('catalogPage');
+        return response()->redirectTo('catalog');
     }
+
+    public function logOut()
+    {
+        Auth::logout();
+        return view('loginForm');
+    }
+
+    public function getProfile()
+    {
+        if(Auth::check()) {
+
+            $user = auth()->user();
+
+            return view('userProfilePage', ['user' => $user]);
+        } else {
+            redirect()->route('login');
+        }
+    }
+
+    public function getEditForm()
+    {
+        if(Auth::check()) {
+
+            $user = auth()->user();
+
+            return view('editProfileForm', ['user' => $user]);
+        } else {
+            redirect()->route('login');
+        }
+    }
+
+    public function editProfile(EditProfileRequest $request)
+    {
+
+        if(Auth::check()) {
+
+            $userId = auth()->id();
+
+            $user = Auth::user();
+            if (!(empty($request->name))) // не пустой => true
+            {
+                $user->name = $request->get('name');
+            }
+
+            if (!(empty($request->email))) {
+                $user->email = $request->get('email');
+
+            }
+
+            if (!(empty($request->password))) {
+                $user->password = $request->get('password');
+            }
+
+            $user->save();
+        } else {
+//            redirect()->route('login');
+            view('welcome');
+        }
+
+     }
+
 }

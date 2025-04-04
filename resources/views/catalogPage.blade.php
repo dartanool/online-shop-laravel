@@ -7,31 +7,34 @@
     @foreach($products as $product)
 
     <div class="product-item">
-        <img class="product-image" src="{{$product['image_url']}}" alt="{{$product['name']}}" data-image-width="720" data-image-height="1080">
+        <img class="product-image" src="{{$product->image_url}}" alt="{{$product->name}}}" data-image-width="720" data-image-height="1080">
         <div class="product-info">
-            <h6 class="product-name"> {{$product['id']}}</h6>
-            <h6 class="product-name"> {{$product['name']}}</h6>
-            <h5 class="product-price">{{$product['price']}}</h5>
+            <h6 class="product-name"> {{$product->id}}</h6>
+            <h6 class="product-name"> {{$product->name}}</h6>
+            <h5 class="product-price">{{$product->price}}</h5>
         </div>
-{{--        <form class = increase-form onsubmit="return false" method="post">--}}
-{{--            <div class="input-box">--}}
-{{--                <input type="hidden" placeholder="Enter product id" value="{{$product['id']}}" name ="product_id" required>--}}
-{{--            </div>--}}
-{{--            <button type="Submit" class="input-box button">+</button>--}}
+        <form class = increase-form action="/add-product" method="post">
+            @csrf
+            <div class="input-box">
+                <input type="hidden" placeholder="Enter product id" value="{{$product->id}}" name ="product_id" required>
+            </div>
+            <button type="Submit" class="input-box button">+</button>
 {{--                <?php if ($product->getId() === $userProduct->getProductId()): ?>--}}
 {{--            <label class = "product-quantity"><b><?php echo $userProduct->getByUserIdProductId($this->authService->getCurrentUser()->getId(),$product->getId())->getAmount() ?></b></label>--}}
 {{--            <?php endif; ?>--}}
 {{--            <?php endforeach; ?>--}}
-{{--        </form>--}}
-{{--        <form class = "decrease-product" onsubmit="return false"  method="post">--}}
-{{--            <div class="input-box">--}}
-{{--                <input type="hidden" placeholder="Enter product id" value="<?php echo $product->getId()?>" name ="product_id" required>--}}
-{{--            </div>--}}
-{{--            <button type="Submit" class="input-box button">-</button>--}}
-{{--        </form>--}}
-        <form class = "product" action= "/product" onsubmit="return false"  method="post">
+        </form>
+        <form class = "decrease-product" action="/decrease-product" method="post">
+            @csrf
             <div class="input-box">
-                <input type="hidden" placeholder="Enter product id" value="{{$product['id']}}" name ="product_id" required>
+                <input type="hidden" placeholder="Enter product id" value="{{$product->id}}" name ="product_id" required>
+            </div>
+            <button type="Submit" class="input-box button">-</button>
+        </form>
+        <form class = "product" action= "/product/{{$product->id}}" method="post">
+            @csrf
+            <div class="input-box">
+                <input type="hidden" placeholder="Enter product id" value="{{$product->id}}" name ="product_id" required>
             </div>
             <button type="Submit" class="input-box button">open</button>
         </form>
@@ -39,6 +42,44 @@
     @endforeach
 </div>
 </html>
+
+{{--<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>--}}
+
+{{--<script>--}}
+{{--    $("document").ready(function () {--}}
+{{--        $('.increase-form').submit(function () {--}}
+{{--            $.ajax({--}}
+{{--                type: "POST",--}}
+{{--                url: "/add-product",--}}
+{{--                data: $(this).serialize(),--}}
+{{--                success: function (response) {--}}
+{{--                    alert(response.message); // Показываем сообщение об успешном добавлении--}}
+{{--                },--}}
+{{--                error: function () {--}}
+{{--                    alert("Error adding product to cart!");--}}
+{{--                }--}}
+{{--            });--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}
+
+{{--<script>--}}
+{{--    $("document").ready(function () {--}}
+{{--        $('.decrease-product').submit(function () {--}}
+{{--            $.ajax({--}}
+{{--                type: "POST",--}}
+{{--                url: "/decrease-product",--}}
+{{--                data: $(this).serialize(),--}}
+{{--                // dataType: 'json',--}}
+{{--                success: function (response) {--}}
+{{--                    console.log(response);--}}
+{{--// Обновляем количество товаров в бейдже корзины--}}
+{{--                    $('.product-quantity').text(response.amount)--}}
+{{--                },--}}
+{{--            });--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}
 
 <style>
     .product-grid {

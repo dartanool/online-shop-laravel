@@ -44,4 +44,8 @@ class User extends \Illuminate\Foundation\Auth\User
             'password' => 'hashed',
         ];
     }
+    public function userProducts()
+    {
+        return $this->hasMany(UserProduct::class);
+    }
 }
