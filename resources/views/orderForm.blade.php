@@ -1,38 +1,53 @@
 <html lang="en" dir="ltr">
 <body>
 <div class="wrapper">
-    <h2>Registration</h2>
-    <form action= "" method="post">
+    <h2>Create order</h2>
+    <form action="{{ route('post.createOrder') }}"  method="post">
         @csrf
-        <label for="name"><b>Name</b></label>
+        <label for="name"><b>Name </b></label>
         @error('name')
         <span style="color: red;">{{ $message }}</span>
         @enderror
         <div class="input-box">
-            <input type="text" placeholder="Enter your name" name ="name" required>
+            <input type="text" placeholder="Enter your name" id="contact_name" name="contact_name" required>
         </div>
-        <label for="email"><b>Email</b></label>
-        @error('email')
+        <label for="address"><b>Адрес доставки</b></label>
+        @error('address')
         <span style="color: red;">{{ $message }}</span>
         @enderror
         <div class="input-box">
-            <input type="text" placeholder="Enter your email" name ="email" required>
+            <input type="text" placeholder="Enter your address" id="address" name="address" required>
         </div>
-        <label for="password"><b>Password</b></label>
-        @error('password')
+        <label for="phone"><b>Номер телефона</b></label>
+        @error('phone')
         <span style="color: red;">{{ $message }}</span>
         @enderror
         <div class="input-box">
-            <input type="password" placeholder="Create password" name="password" required>
+            <input type="text" placeholder="+7 (___) ___-__-__" id="contact_phone" name="contact_phone" required>
         </div>
+        <label for="text"><b>Комментарий</b></label>
         <div class="input-box">
-            <input type="password" placeholder="Confirm password" name ="password_confirmation" required>
+            <input type="text" placeholder="Enter your comment" id="comment" name ="comment" >
+        </div>
+        <div class="wrapper">
+            @foreach($userProducts as $userProduct)
+            <h3>{{$userProduct->name}}</h3>
+            <label for="amount">Количество:</label>
+            <input type="number" id="amount" name="amount" min="1" value="{{$userProduct->amount}}" required>
+            <div>
+                <label for="amount">Стоимость за 1 шт:</label>
+                <label class="price">₽ {{$userProduct->product->price}}</label>
+            </div>
+            <div>
+                <label for="totalProduct">Итого:</label>
+                <label class="price">₽ {{($userProduct->product->price)*($userProduct->amount)}}</label>
+            </div>
+            @endforeach
+            <h3><label for="totalOrder">Заказ на сумму:</label></h3>
+            <div class="price">₽ {{$total}}</div>
         </div>
         <div class="input-box button">
-            <input type="Submit" value="Register Now">
-        </div>
-        <div class="text">
-            <h3>Already have an account? <a href="/login">Login now</a></h3>
+            <input type="Submit" value="Create order">
         </div>
     </form>
 </div>
@@ -108,10 +123,10 @@
         align-items: center;
     }
     form h3{
-        color: #707070;
-        font-size: 14px;
-        font-weight: 500;
-        margin-left: 10px;
+        position: relative;
+        font-size: 22px;
+        font-weight: 600;
+        color: #333;
     }
     .input-box.button input{
         color: #fff;
@@ -122,13 +137,5 @@
     }
     .input-box.button input:hover{
         background: #0e4bf1;
-    }
-    form .text h3{
-        color: #333;
-        width: 100%;
-        text-align: center;
-    }
-    form .text h3 a{
-        color: #4070f4;
     }
 </style>

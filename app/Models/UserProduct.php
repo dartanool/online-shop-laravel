@@ -7,11 +7,18 @@ use Ramsey\Uuid\Type\Integer;
 
 class UserProduct extends Model
 {
+    /**
+     * @property int $user_id
+     * @property int $product_id
+     * @property int $amount
+     * @property int $totalSum
+     */
     protected $fillable = [
         'user_id',
         'product_id',
         'amount',
     ];
+
 
     public function product()
     {

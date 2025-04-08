@@ -18,7 +18,7 @@ class UserController
     }
     public function signUp(SignUpRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
 
         $user = User::query()->create([
             'name' => $data['name'],
@@ -35,12 +35,13 @@ class UserController
 
     public function logIn(LogInRequest $request)
     {
-        $result = Auth::attempt([
+        $result = [
             'email' => $request->get('email'),
             'password' => $request->get('password')
-        ]);
-
-        return response()->redirectTo('catalog');
+        ]   ;
+        if (Auth::attempt($result)) {
+            return response()->redirectTo('catalog');
+        }
     }
 
     public function logOut()
@@ -51,55 +52,37 @@ class UserController
 
     public function getProfile()
     {
-        if(Auth::check()) {
+        $user = auth()->user();
 
-            $user = auth()->user();
-
-            return view('userProfilePage', ['user' => $user]);
-        } else {
-            redirect()->route('login');
-        }
+        return view('userProfilePage', ['user' => $user]);
     }
 
     public function getEditForm()
     {
-        if(Auth::check()) {
+        $user = auth()->user();
 
-            $user = auth()->user();
-
-            return view('editProfileForm', ['user' => $user]);
-        } else {
-            redirect()->route('login');
-        }
+        return view('editProfileForm', ['user' => $user]);
     }
 
     public function editProfile(EditProfileRequest $request)
     {
-
-        if(Auth::check()) {
-
-            $userId = auth()->id();
-
-            $user = Auth::user();
-            if (!(empty($request->name))) // не пустой => true
-            {
-                $user->name = $request->get('name');
-            }
-
-            if (!(empty($request->email))) {
-                $user->email = $request->get('email');
-
-            }
-
-            if (!(empty($request->password))) {
-                $user->password = $request->get('password');
-            }
-
-            $user->save();
-        } else {
-//            redirect()->route('login');
-            view('welcome');
+        $user = Auth::user();
+        if (!(empty($request->name))) // не пустой => true
+        {
+            $user->name = $request->get('name');
         }
+
+        if (!(empty($request->email))) {
+            $user->email = $request->get('email');
+
+        }
+
+        if (!(empty($request->password))) {
+            $user->password = $request->get('password');
+        }
+
+        $user->save();
+
 
      }
 

@@ -22,7 +22,7 @@
             @foreach($reviews as $review)
 
             <div class="review-item">
-                <p class="review-author">Автор: {{$review->name}} </p>
+                <p class="review-author">Автор: {{$review->user->name}} </p>
                 <p class="review-author">Время: {{$review->created_at}}</p>
                 <p class="review-author">Оценка: {{$review->score}}</p>
                 <p class="review-text">{{$review->review_text}}</p>
