@@ -33,12 +33,19 @@ class OrderController extends Controller
     {
         try {
             $dto = $request->getDto();
-
             $this->orderService->create($dto);
+
 
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Ошибка при создании заказа: ' . $e->getMessage());
         }
+    }
+
+    public function getAll()
+    {
+        $userOrders = Order::query()->where('user_id', Auth::id())->get();
+
+        return view('userOrdersPage', compact('userOrders'));
     }
 
 }

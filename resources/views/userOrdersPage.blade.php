@@ -8,7 +8,7 @@
         <p>{{$userOrder->contact_name}}</p>
         <p>{{$userOrder->contact_phone}}</p>
         <p>{{$userOrder->comment}}</p>
-        <p>{{$userOrder->address}}</p>
+{{--        <p>{{$userOrder->address}}</p>--}}
         <table>
             <thead>
             <tr>
@@ -19,14 +19,14 @@
             </tr>
             </thead>
             <tbody>
-{{--                <?php foreach ($userOrder->getOrderProducts() as $orderProduct): ?>--}}
-{{--            <tr>--}}
-{{--                <td><?php echo $orderProduct->getProduct()->getName()?></td>--}}
-{{--                <td><?php echo $orderProduct->getAmount()?></td>--}}
-{{--                <td><?php echo $orderProduct->getProduct()->getPrice()?></td>--}}
-{{--                <td><?php echo $orderProduct->getAmount() * $orderProduct->getProduct()->getPrice()?></td>--}}
-{{--            </tr>--}}
-{{--            <?php endforeach; ?>--}}
+                <?php foreach ($userOrder->orderProducts as $orderProduct): ?>
+            <tr>
+                <td><?php echo $orderProduct->product->name?></td>
+                <td><?php echo $orderProduct->amount?></td>
+                <td><?php echo $orderProduct->product->price?></td>
+                <td><?php echo $orderProduct->amount * $orderProduct->product->price?></td>
+            </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
         <p>Сумма заказа <?php echo $userOrder->getSum();?></p>

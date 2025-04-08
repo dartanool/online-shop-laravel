@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\ProductRequest;
+use App\Http\Services\CartService;
 use App\Models\UserProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CartController
+class CartController extends Controller
 {
 
     public function getCart()
@@ -22,49 +24,22 @@ class CartController
         }
     }
 
-    public function addToCart(Request $request)
+    public function addToCart(ProductRequest $request)
     {
-        if(Auth::check()) {
-            $productId = $request->input('product_id');
+        $dto = $request->getDto();
+        $this->cartService->addToCart($dto);
 
-            $userProduct = UserProduct::query()->where('user_id', auth()->id())
-                ->where('product_id', $productId)
-                ->first();
-
-            if ($userProduct) {
-                $userProduct->increment('amount');
-            } else
-                UserProduct::query()->create([
-                    'user_id' => auth()->id(),
-                    'product_id' => $productId,
-                    'amount' => 1,
-                ]);
-            return response()->redirectTo('catalog');
-        } else {
-
-            redirect()->route('login');
-        }
+        return response()->redirectTo('catalog');
     }
 
-    public function removeFromCart(Request $request)
+    public function removeFromCart(ProductRequest $request)
     {
-        if(Auth::check()) {
-            $productId = $request->input('product_id');
+        $dto = $request->getDto();
 
-            $userProduct = UserProduct::query()->where('user_id', auth()->id())
-                ->where('product_id', $productId)
-                ->first();
+        $this->cartService->removeFromCart($dto);
 
-            if ($userProduct['amount'] !== 1) {
-                UserProduct::query()->where('user_id', auth()->id())->decrement('amount');
-            } else {
-                UserProduct::query()->where('user_id', auth()->id())->delete();
-            }
+        return response()->redirectTo('catalog');
 
-            return response()->redirectTo('catalog');
 
-        } else {
-            redirect()->route('login');
-        }
     }
 }

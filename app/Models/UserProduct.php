@@ -30,6 +30,7 @@ class UserProduct extends Model
         return $this->belongsTo(User::class);
     }
 
+
 //    public static function addProductToCart(int $userId, int $productId, int $amount)
 //    {
 //        $userProduct = UserProduct::query()->where('user_id', $userId)->where('product_id', $productId)->first();

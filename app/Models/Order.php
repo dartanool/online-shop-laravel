@@ -20,4 +20,20 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function orderProducts()
+    {
+        return $this->hasMany(OrderProduct::class);
+    }
+
+    public function getSum() : int
+    {
+        $sum = 0;
+        foreach($this->orderProducts()->get() as $orderProduct)
+        {
+            $sum += $orderProduct->amount * $orderProduct->product->price;
+        }
+
+        return $sum;
+    }
+
 }

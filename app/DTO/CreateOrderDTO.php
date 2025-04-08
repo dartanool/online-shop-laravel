@@ -10,8 +10,7 @@ class CreateOrderDTO
         private string $phone,
         private string|null $comment,
         private string $address
-    ){
-    }
+    ){}
 
     public function getName(): string
     {

@@ -17,7 +17,7 @@
     </div>
     <div class="reviews-section">
         <h4 class="reviews-title">Отзывы</h4>
-        <h5 class="average-rating">Средняя оценка: </h5>
+        <h5 class="average-rating">Средняя оценка: {{$product->getAverageScore()}} </h5>
         <div class="reviews-list">
             @foreach($reviews as $review)
 

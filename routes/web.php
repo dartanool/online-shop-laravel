@@ -17,7 +17,7 @@ Route::get('/logout', [UserController::class, 'logOut']);
 Route::middleware('auth')->get('/user-profile', [UserController::class, 'getProfile']);
 Route::middleware('auth')->get('/edit-user-profile', [UserController::class, 'getEditForm']);
 Route::middleware('auth')->get('/create-order', [OrderController::class, 'getOrderForm']);
-Route::middleware('auth')->get('/user-orders', [OrderController::class, 'getOrders']);
+Route::middleware('auth')->get('/user-orders', [OrderController::class, 'getAll']);
 
 Route::post('/sign-up', [UserController::class, 'signUp'])->name('post.sign-up');
 Route::post('/login', [UserController::class, 'logIn']);

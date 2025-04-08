@@ -16,7 +16,7 @@
             <tbody>
             <tr>
                 <td>{{ $userProduct->product->name }}</td>
-                <td> {{$userProduct['amount']}}</td>
+                <td> {{$userProduct->amount}}</td>
                 <td>{{ $userProduct->product->price }}</td>
                 <td>{{ number_format($userProduct->amount * $userProduct->product->price) }}</td>
             </tr>
