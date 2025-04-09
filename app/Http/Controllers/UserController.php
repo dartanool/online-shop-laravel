@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EditProfileRequest;
 use App\Http\Requests\LogInRequest;
 use App\Http\Requests\SignUpRequest;
+use App\Mail\TestMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserController
 {
@@ -25,6 +27,8 @@ class UserController
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+//        Mail::to('dartanool2003@gmail.com')->send(new TestMail());
 
         return response()->redirectTo('login');
     }

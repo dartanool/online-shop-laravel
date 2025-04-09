@@ -10,6 +10,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/sign-up', [UserController::class, 'getSignUpForm'])->name('get.sign-up');
+
+Route::get('/email/test', [\App\Http\Controllers\TestMailController::class, 'send']);
+
 Route::get('/login', [UserController::class, 'getLoginForm'])->name('login');
 Route::get('/catalog', [ProductController::class, 'getCatalog']);
 Route::middleware('auth')->get('/cart', [CartController::class, 'getCart']);
