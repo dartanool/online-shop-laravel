@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use function PHPUnit\Framework\exactly;
 
 class UserController
 {
@@ -28,7 +29,7 @@ class UserController
             'password' => Hash::make($data['password']),
         ]);
 
-//        Mail::to('dartanool2003@gmail.com')->send(new TestMail());
+        TestMailController::send($user->id);
 
         return response()->redirectTo('login');
     }

@@ -11,8 +11,6 @@ Route::get('/', function () {
 });
 Route::get('/sign-up', [UserController::class, 'getSignUpForm'])->name('get.sign-up');
 
-Route::get('/email/test', [\App\Http\Controllers\TestMailController::class, 'send']);
-
 Route::get('/login', [UserController::class, 'getLoginForm'])->name('login');
 Route::get('/catalog', [ProductController::class, 'getCatalog']);
 Route::middleware('auth')->get('/cart', [CartController::class, 'getCart']);
@@ -30,3 +28,7 @@ Route::middleware('auth')->post('/edit-user-profile', [UserController::class, 'e
 Route::middleware('auth')->post('/product/{id}', [ProductController::class, 'getProduct']);
 Route::middleware('auth')->post('/add-review', [ProductController::class, 'addReview']);
 Route::middleware('auth')->post('/create-order', [OrderController::class, 'create'])->name('post.createOrder');
+
+
+Route::get('/email/receive', [\App\Http\Controllers\TestMailController::class, 'receive']);
+
