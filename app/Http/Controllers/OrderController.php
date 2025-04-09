@@ -35,6 +35,7 @@ class OrderController extends Controller
             $dto = $request->getDto();
             $this->orderService->create($dto);
 
+            return response()->redirectTo('catalog');
 
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Ошибка при создании заказа: ' . $e->getMessage());

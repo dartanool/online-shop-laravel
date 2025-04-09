@@ -25,3 +25,13 @@ services:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+  rabbitmq:
+      image: rabbitmq:3.10-management
+      ports:
+          - 15672:15672
+          - 5672:5672
+      environment:
+          RABBITMQ_DEFAULT_USER: guest
+          RABBITMQ_DEFAULT_PASS: guest
+      restart: always
