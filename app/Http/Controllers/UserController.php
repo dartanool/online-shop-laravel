@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EditProfileRequest;
 use App\Http\Requests\LogInRequest;
 use App\Http\Requests\SignUpRequest;
+use App\Http\Services\RabbitmqService;
 use App\Mail\TestMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,11 @@ use function PHPUnit\Framework\exactly;
 
 class UserController
 {
+    private RabbitmqService $rabbitmqService;
+    public function __construct(RabbitmqService $rabbitmqService)
+    {
+        $this->rabbitmqService = $rabbitmqService;
+    }
 
     public function getSignUpForm()
     {
@@ -29,10 +35,7 @@ class UserController
             'password' => Hash::make($data['password']),
         ]);
 
-        $userId = $user->id;
-
-        TestMailController::send(2);
-//        TestMailController::send($userId);
+        $this->rabbitmqService->produce(['user_id' => $user->id], 'sign-up-email');
 
         return response()->redirectTo('login');
     }
