@@ -29,7 +29,10 @@ class UserController
             'password' => Hash::make($data['password']),
         ]);
 
-        TestMailController::send($user->id);
+        $userId = $user->id;
+
+        TestMailController::send(2);
+//        TestMailController::send($userId);
 
         return response()->redirectTo('login');
     }
@@ -43,7 +46,7 @@ class UserController
         $result = [
             'email' => $request->get('email'),
             'password' => $request->get('password')
-        ]   ;
+        ] ;
         if (Auth::attempt($result)) {
             return response()->redirectTo('catalog');
         }
