@@ -72,9 +72,13 @@ return [
         ],
 
         'redis' => [
-            'driver' => 'redis',
-            'connection' => env('REDIS_CACHE_CONNECTION', 'cache'),
-            'lock_connection' => env('REDIS_CACHE_LOCK_CONNECTION', 'default'),
+            'client' => 'predis', // или 'phpredis'
+            'default' => [
+                'host' => env('REDIS_HOST', 'redis'),
+                'password' => env('REDIS_PASSWORD', null),
+                'port' => env('REDIS_PORT', 6379),
+                'database' => 0,
+            ],
         ],
 
         'dynamodb' => [
