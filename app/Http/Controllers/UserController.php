@@ -5,6 +5,7 @@ use App\Http\Requests\EditProfileRequest;
 use App\Http\Requests\LogInRequest;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Services\RabbitmqService;
+use App\Jobs\SendUserNotification;
 use App\Mail\TestMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +36,8 @@ class UserController
             'password' => Hash::make($data['password']),
         ]);
 
-        $this->rabbitmqService->produce(['user_id' => $user->id], 'sign-up-email');
+        SendUserNotification::dispatch($user);
+//        $this->rabbitmqService->produce(['user_id' => $user->id], 'sign-up-email');
 
         return response()->redirectTo('login');
     }
