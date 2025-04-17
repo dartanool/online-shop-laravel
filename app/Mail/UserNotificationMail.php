@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -13,16 +14,16 @@ class UserNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public string $name;
-    public function __construct(string $name)
+    public User $user;
+    public function __construct(User $user)
     {
-        $this->name = $name;
+        $this->user = $user;
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Test Mail',
+            subject: "Test Mail {$this->user->name}",
         );
     }
 
@@ -32,7 +33,7 @@ class UserNotificationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.welcome',
+            view: 'emails.test',
         );
     }
 

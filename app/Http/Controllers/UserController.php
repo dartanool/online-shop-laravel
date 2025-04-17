@@ -6,6 +6,7 @@ use App\Http\Requests\LogInRequest;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Services\RabbitmqService;
 use App\Jobs\SendUserNotification;
+
 use App\Mail\TestMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use function PHPUnit\Framework\exactly;
+
+
 
 class UserController
 {
