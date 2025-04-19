@@ -41,7 +41,8 @@ class OrderService
 
             $orderId = $order->id;
 
-            $description = [];
+//            $description = [];
+            $description = "";
             $count = 0;
             foreach ($userProducts as $userProduct) {
                 OrderProduct::query()->create([
@@ -50,8 +51,8 @@ class OrderService
                     'amount' => $userProduct->amount,
                 ]);
                 $count += 1;
-
-                $description["$count"] = "productId: ".$userProduct->product_id  . " amount: ".$userProduct->amount;
+                $description .= "productId: ".$userProduct->product_id  . " amount: ".$userProduct->amount."<br>";
+//                $description["$count"] = "productId: ".$userProduct->product_id  . " amount: ".$userProduct->amount;
             }
 
             CreateTasktYougile::dispatch($orderId, $description);

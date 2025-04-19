@@ -14,11 +14,11 @@ class CreateTasktYougile implements ShouldQueue
 //    protected $apiKey;
 //    protected $apiToken;
     protected string $orderId;
-    protected array $description;
+    protected string $description;
     /**
      * Create a new job instance.
      */
-    public function __construct(int $orderId, array $description)
+    public function __construct(int $orderId, string $description)
     {
 //        $this->apiKey = $apiKey;
 //        $this->apiToken = $apiToken;
@@ -36,11 +36,11 @@ class CreateTasktYougile implements ShouldQueue
         $data = [
             'title' => "Order # $this->orderId",
             'columnId' => $columnId,
-            'description' => 'orders',
+            'description' => $this->description,
             'archived' => false,
             'completed' => false,
-            'subtasks' => [$this->description],
         ];
+//        'subtasks' => [$this->description],
 
         $res = new YougileClient();
         $res->createTasks($data);
