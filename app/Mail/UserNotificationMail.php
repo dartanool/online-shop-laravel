@@ -14,26 +14,32 @@ class UserNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public User $user;
+    public string $name;
     public function __construct(User $user)
     {
-        $this->user = $user;
+        $this->name = $user->name;
     }
 
     public function envelope(): Envelope
     {
+        echo 'envelop';
         return new Envelope(
-            subject: "Test Mail {$this->user->name}",
+            subject: "Test Mail {$this->name}",
         );
     }
 
     /**
      * Get the message content definition.
      */
+
     public function content(): Content
     {
+        echo 'content';
         return new Content(
-            view: 'emails.test',
+            view: 'emails.welcome',
+            with:[
+                'name' => $this->name,
+            ]
         );
     }
 

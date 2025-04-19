@@ -33,8 +33,12 @@ class SendUserNotification implements ShouldQueue
     {
         print_r('1'.$this->user->email); //Эти данные выводит
         print_r('2'.$this->user->name); //Эти данные выводит
+        try{
+            Mail::to($this->user->email)->send(new UserNotificationMail($this->user));
 
-        Mail::to($this->user->email)->send(new UserNotificationMail($this->user));
+        } catch (\Throwable $e){
+            print_r($e->getMessage());
+        }
 //        Mail::to('a1@gmail.com')->send(new TestMail());
     }
 }

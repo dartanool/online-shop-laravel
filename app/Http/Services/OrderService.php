@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\DTO\CreateOrderDTO;
+use App\Jobs\CreateTasktYougile;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\UserProduct;
@@ -40,16 +41,22 @@ class OrderService
 
             $orderId = $order->id;
 
+            $description = [];
+            $count = 0;
             foreach ($userProducts as $userProduct) {
                 OrderProduct::query()->create([
                     'order_id' => $orderId,
                     'product_id' => $userProduct->product_id,
                     'amount' => $userProduct->amount,
                 ]);
+                $count += 1;
 
+                $description["$count"] = "productId: ".$userProduct->product_id  . " amount: ".$userProduct->amount;
             }
 
-            UserProduct::query()->where('user_id', $user->id)->delete();
+            CreateTasktYougile::dispatch($orderId, $description);
+
+//            UserProduct::query()->where('user_id', $user->id)->delete();
 
             DB::commit();
         } catch (\Throwable $exception) {

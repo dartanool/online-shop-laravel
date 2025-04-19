@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\DTO\CreateOrderDTO;
 use App\Http\Requests\CreateOrderRequest;
 use App\Http\Requests\SignUpRequest;
-use App\Jobs\CreateProjectYougile;
+use App\Jobs\CreateTasktYougile;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\UserProduct;
@@ -35,8 +35,6 @@ class OrderController extends Controller
         try {
             $dto = $request->getDto();
             $this->orderService->create($dto);
-
-            CreateProjectYougile::dispatch('Test Order');
 
             return response()->redirectTo('catalog');
 
