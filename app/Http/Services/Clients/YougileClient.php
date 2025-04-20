@@ -19,21 +19,29 @@ class YougileClient
     public function createTasks(array $data)
     {
 
-        $response = Http::withHeaders([
+//        $response = Http::withHeaders([
+//            'X-API-KEY' => $this->apiKey,
+//            'Authorization' => 'Bearer ' . $this->apiToken,
+//            'Content-Type' => 'application/json',
+//        ])->post($this->baseUrl.'tasks', $data);
+//
+//        // Обработка ответа
+//        if ($response->successful()) {
+//            $data = $response->json();
+//            // Действия при успехе, например:
+//            return 'true';
+//        } else {
+//            // Логирование или обработка ошибок
+//            logger()->error('Yougile API error', ['response' => $response->body()]);
+//        }
+
+        $response = retry(3, function () use ($data)  {
+            return Http::withHeaders([
             'X-API-KEY' => $this->apiKey,
             'Authorization' => 'Bearer ' . $this->apiToken,
             'Content-Type' => 'application/json',
         ])->post($this->baseUrl.'tasks', $data);
-
-        // Обработка ответа
-        if ($response->successful()) {
-            $data = $response->json();
-            // Действия при успехе, например:
-            return 'true';
-        } else {
-            // Логирование или обработка ошибок
-            logger()->error('Yougile API error', ['response' => $response->body()]);
-        }
+        });
     }
 
 }
